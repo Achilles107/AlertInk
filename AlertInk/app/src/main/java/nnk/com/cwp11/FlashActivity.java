@@ -11,7 +11,7 @@ import android.os.Handler;
  */
 public class FlashActivity extends Activity
 {
-    private static int TIMEOUT=4000;
+    private static int TIMEOUT=2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

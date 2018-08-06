@@ -5,16 +5,20 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +41,9 @@ public class ContactActivity extends AppCompatActivity
     private static Button button;
     private static LayoutInflater layoutInflater1;
     private static AlertDialog alertDialog;
+    private static EditText editText;
     int day,month,year;
+    String name_db,phone_number_db,dob_db,message_db;
     Calendar calendar;
     private static TextView textView;
     @Override
@@ -52,7 +58,7 @@ public class ContactActivity extends AppCompatActivity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ContactModel model = list.get(position);
+                final ContactModel model = list.get(position);
                 builder = new AlertDialog.Builder(ContactActivity.this);
                 layoutInflater1 = getLayoutInflater();
                 View dview = layoutInflater1.inflate(R.layout.inside_dialog, null);
@@ -61,6 +67,7 @@ public class ContactActivity extends AppCompatActivity
                 builder.setView(dview);
                 textView = (TextView) dview.findViewById(R.id.date);
                 button = (Button) dview.findViewById(R.id.set_date);
+                editText=(EditText)dview.findViewById(R.id.message);
                 alertDialog = builder.create();
                 textView.setText("dd/mm/yyyy");
                 calendar = Calendar.getInstance();
@@ -82,7 +89,22 @@ public class ContactActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        Toast.makeText(getApplicationContext(),textView.getText().toString()+"",Toast.LENGTH_SHORT).show();
+                        name_db=model.getName().toString();
+                        phone_number_db=model.getPhone_number().toString();
+                        message_db=editText.getText().toString();
+                        dob_db=textView.getText().toString();
+                        try
+                        {
+                            MyDatabaseClass myDatabaseClass=new MyDatabaseClass(ContactActivity.this);
+                            SQLiteDatabase database=myDatabaseClass.getWritableDatabase();
+                            String query="insert into " + MyDatabaseClass.TABLE_NAME +" values ('" + name_db + "','" + phone_number_db + "','" + message_db + "','" + dob_db + "')";
+                            database.execSQL(query);
+                            Toast.makeText(ContactActivity.this,"USER_CREATED",Toast.LENGTH_SHORT).show();
+                            myDatabaseClass.close();
+                        }catch (Exception e)
+                        {
+                            Log.e("User Created",""+e);}
+                        //Toast.makeText(getApplicationContext(),name_db+"",Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                         /*calendar = Calendar.getInstance();
                         day = calendar.get(Calendar.DAY_OF_MONTH);

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="10dp">
 
     <TextView
         android:textSize="20sp"
@@ -10,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dd/mm/yyyy"
-        android:padding="20dp"
+        android:padding="10dp"
         android:layout_gravity="left"/>
 
     <Button
@@ -18,10 +19,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set Date"
+        android:textSize="12sp"
         android:onClick="setDate"
         android:textColor="@color/white"
         android:textStyle="bold"
         style="?android:attr/borderlessButtonStyle"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"
+        android:layout_toRightOf="@+id/date"/>
 
-</LinearLayout>
+    <EditText
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type a message"
+        android:layout_below="@+id/set_date"
+        android:padding="30dp"/>
+
+</RelativeLayout>
