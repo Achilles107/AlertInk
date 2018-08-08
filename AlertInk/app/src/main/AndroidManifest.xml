@@ -21,6 +21,8 @@
 
         <activity android:name=".ContactActivity"></activity>
 
+        <activity android:name=".ReminderActivity"></activity>
+
     </application>
 
 </manifest>

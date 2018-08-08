@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -101,6 +102,7 @@ public class ContactActivity extends AppCompatActivity
                             database.execSQL(query);
                             Toast.makeText(ContactActivity.this,"USER_CREATED",Toast.LENGTH_SHORT).show();
                             myDatabaseClass.close();
+                            startActivity(new Intent(ContactActivity.this,ReminderActivity.class));
                         }catch (Exception e)
                         {
                             Log.e("User Created",""+e);}
