@@ -76,16 +76,6 @@ public class ContactActivity extends AppCompatActivity
                 month = calendar.get(Calendar.MONTH);
                 year = calendar.get(Calendar.YEAR);
                 showDate(year,month+1,day);
-                //Dialog d=new Dialog(ContactActivity.this);
-                //button=(Button)d.findViewById(R.id.set_date);
-                /*button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.cancel();
-                        Toast.makeText(getApplicationContext(),"Set",Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-                //builder.setMessage("Set Birth date");
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
@@ -96,22 +86,27 @@ public class ContactActivity extends AppCompatActivity
                         dob_db=textView.getText().toString();
                         try
                         {
-                            MyDatabaseClass myDatabaseClass=new MyDatabaseClass(ContactActivity.this);
+                            /*MyDatabaseClass myDatabaseClass=new MyDatabaseClass(ContactActivity.this);
                             SQLiteDatabase database=myDatabaseClass.getWritableDatabase();
                             String query="insert into " + MyDatabaseClass.TABLE_NAME +" values ('" + name_db + "','" + phone_number_db + "','" + message_db + "','" + dob_db + "')";
                             database.execSQL(query);
                             Toast.makeText(ContactActivity.this,"USER_CREATED",Toast.LENGTH_SHORT).show();
-                            myDatabaseClass.close();
-                            startActivity(new Intent(ContactActivity.this,ReminderActivity.class));
+                            myDatabaseClass.close();*/
+                            MyDatabaseClass myDatabaseClass=new MyDatabaseClass(ContactActivity.this);
+                            int ID=myDatabaseClass.addReminder(new Reminder(name_db,phone_number_db,message_db,dob_db));
+                            Toast.makeText(getApplicationContext(), "Saved",
+                                    Toast.LENGTH_SHORT).show();
+                            Intent intent_main=new Intent(ContactActivity.this,MainActivity.class);
+                            /*intent_main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent_main.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);*/
+                            startActivity(intent_main);
+                            //finish();
+                            //startActivity(new Intent(ContactActivity.this,MainActivity.class));
                         }catch (Exception e)
                         {
                             Log.e("User Created",""+e);}
-                        //Toast.makeText(getApplicationContext(),name_db+"",Toast.LENGTH_SHORT).show();
                         dialog.cancel();
-                        /*calendar = Calendar.getInstance();
-                        day = calendar.get(Calendar.DAY_OF_MONTH);
-                        month = calendar.get(Calendar.MONTH);
-                        year = calendar.get(Calendar.YEAR);*/
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -121,7 +116,6 @@ public class ContactActivity extends AppCompatActivity
                     }
                 });
                 builder.show();
-                //Toast.makeText(getApplicationContext(),model.getName()+"",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -156,7 +150,6 @@ public class ContactActivity extends AppCompatActivity
 
     private void readContacts()
     {
-        //List<ContactModel> newList=list;
         Cursor phones=getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
         while (phones.moveToNext())
         {
@@ -173,7 +166,6 @@ public class ContactActivity extends AppCompatActivity
     public void setDate(View view)
     {
         showDialog(999);
-        //Toast.makeText(ContactActivity.this, "HI", Toast.LENGTH_SHORT).show();
     }
 
     @Override
