@@ -85,4 +85,22 @@ public class MyDatabaseClass extends SQLiteOpenHelper
         return reminderList;
     }
 
+    //get single reminder
+    public Reminder getReminder(int id)
+    {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.query(TABLE_NAME, new String[]{KEY_ID, NAME, PHONE, MES, DOB}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor!=null)
+            cursor.moveToFirst();
+        Reminder reminder=new Reminder(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
+        return  reminder;
+    }
+
+    public void deleteReminder(Reminder reminder)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.delete(TABLE_NAME,KEY_ID + "=?",new String[]{String.valueOf(reminder.getID())});
+        db.close();
+    }
+
     }

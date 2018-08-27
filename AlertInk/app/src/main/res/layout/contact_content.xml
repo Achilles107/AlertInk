@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
     android:descendantFocusability="beforeDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="15dp"
+    android:paddingLeft="10dp"
     android:paddingRight="15dp"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
-    android:background="@drawable/card_background_selector"
     android:descendantFocusability="afterDescendants">
+
+        <ImageView
+            android:id="@+id/propic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/profiler"/>
+
 
     <TextView
         android:id="@+id/contact_name"
@@ -24,13 +31,19 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/propic"
         android:textColor="#000"/>
 
     <TextView
         android:id="@+id/contact_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp" />
-</LinearLayout>
+        android:textSize="15sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/propic"
+        android:layout_below="@+id/contact_name"/>
+</RelativeLayout>
 
 </FrameLayout>

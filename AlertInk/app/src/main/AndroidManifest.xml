@@ -3,6 +3,7 @@
     package="nnk.com.cwp11" >
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +24,8 @@
         <activity android:name=".ContactActivity"></activity>
 
         <activity android:name=".ReminderActivity"></activity>
+
+        <receiver android:name=".AlarmReceiver"/>
 
     </application>
 

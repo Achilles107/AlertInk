@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity
     ProgressDialog dialog;
     AlertDialog.Builder alertDialog;
     TextView no_rem;
+    String[] items={"Send Wishes Now","Delete"};
     public boolean exit=false;
+    public ReminderAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,6 +40,42 @@ public class MainActivity extends AppCompatActivity
         FloatingActionButton floatingActionButton=(FloatingActionButton)findViewById(R.id.fab);
         listView=(ListView)findViewById(R.id.list_reminders);
         new LoadReminders().execute();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                final Reminder rem=list.get(position);
+                alertDialog=new AlertDialog.Builder(MainActivity.this);
+                alertDialog.setIcon(android.R.drawable.stat_notify_more);
+                alertDialog.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0: {
+                                Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            case 1: {
+                                int id1=rem.getID();
+                                MyDatabaseClass mdb=new MyDatabaseClass(MainActivity.this);
+                                Reminder r=mdb.getReminder(id1);
+                                mdb.deleteReminder(r);
+                                new AlarmReceiver().cancelAlarm(getApplicationContext(), id1);
+                                //Refresh the Activity.
+                                finish();
+                                startActivity(getIntent());
+                                Toast.makeText(getApplicationContext(),"Deleted",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),items[which],Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
+                    }
+                });
+                alertDialog.setCancelable(true);
+                alertDialog.show();
+            }
+        });
         /*if (listView==null)
             Toast.makeText(MainActivity.this,"No Reminders",Toast.LENGTH_SHORT).show();*/
         floatingActionButton.setOnClickListener(new View.OnClickListener()
@@ -64,7 +103,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            listView.setAdapter(new ReminderAdapter(MainActivity.this,list));
+            adapter=new ReminderAdapter(MainActivity.this,list);
+            listView.setAdapter(adapter);
             if (dialog.isShowing())
             {
                 dialog.dismiss();

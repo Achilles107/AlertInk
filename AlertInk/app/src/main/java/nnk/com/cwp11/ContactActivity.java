@@ -1,5 +1,6 @@
 package nnk.com.cwp11;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -43,9 +44,10 @@ public class ContactActivity extends AppCompatActivity
     private static LayoutInflater layoutInflater1;
     private static AlertDialog alertDialog;
     private static EditText editText;
-    int day,month,year;
+    int day,month,year,hour,min,sec;
     String name_db,phone_number_db,dob_db,message_db;
     Calendar calendar;
+    public static final String EXTRA_REMINDER_ID="Reminder_ID";
     private static TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +56,12 @@ public class ContactActivity extends AppCompatActivity
         getSupportActionBar().setTitle("Select Contact");
 
         listView=(ListView)findViewById(R.id.list_contacts);
+        //listView.setDivider(getDrawable(R.drawable.divider_list));
 
         new LoadContacts().execute();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
                 final ContactModel model = list.get(position);
                 builder = new AlertDialog.Builder(ContactActivity.this);
                 layoutInflater1 = getLayoutInflater();
@@ -86,23 +89,29 @@ public class ContactActivity extends AppCompatActivity
                         dob_db=textView.getText().toString();
                         try
                         {
-                            /*MyDatabaseClass myDatabaseClass=new MyDatabaseClass(ContactActivity.this);
-                            SQLiteDatabase database=myDatabaseClass.getWritableDatabase();
-                            String query="insert into " + MyDatabaseClass.TABLE_NAME +" values ('" + name_db + "','" + phone_number_db + "','" + message_db + "','" + dob_db + "')";
-                            database.execSQL(query);
-                            Toast.makeText(ContactActivity.this,"USER_CREATED",Toast.LENGTH_SHORT).show();
-                            myDatabaseClass.close();*/
+                            String date=textView.getText().toString();
+                            day=Integer.parseInt(date.substring(0,2));
+                            month=Integer.parseInt(date.substring(3,4));
+                            year=Integer.parseInt(date.substring(5,9));
                             MyDatabaseClass myDatabaseClass=new MyDatabaseClass(ContactActivity.this);
                             int ID=myDatabaseClass.addReminder(new Reminder(name_db,phone_number_db,message_db,dob_db));
                             Toast.makeText(getApplicationContext(), "Saved",
                                     Toast.LENGTH_SHORT).show();
+                            //calendar.setTimeInMillis(System.currentTimeMillis());
+                            //calendar.clear();
+                            calendar.set(Calendar.MONTH, --month);
+                            calendar.set(Calendar.YEAR,year);
+                            calendar.set(Calendar.DAY_OF_MONTH,day);
+                            calendar.set(Calendar.HOUR_OF_DAY,00);
+                            calendar.set(Calendar.MINUTE,00);
+                            calendar.set(Calendar.SECOND, 00);
+                            /*calendar.setTimeInMillis(System.currentTimeMillis());
+                            calendar.clear();
+                            calendar.set(2018,7,23,);*/
+
+                            new AlarmReceiver().setAlarm(getApplicationContext(), calendar, ID);
                             Intent intent_main=new Intent(ContactActivity.this,MainActivity.class);
-                            /*intent_main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            intent_main.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);*/
                             startActivity(intent_main);
-                            //finish();
-                            //startActivity(new Intent(ContactActivity.this,MainActivity.class));
                         }catch (Exception e)
                         {
                             Log.e("User Created",""+e);}
@@ -161,6 +170,7 @@ public class ContactActivity extends AppCompatActivity
         }
         phones.close();
     }
+
 
     @SuppressWarnings("deprecation")
     public void setDate(View view)
