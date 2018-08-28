@@ -25,8 +25,8 @@
         android:elevation="6dp"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@null"
-        android:dividerHeight="10dp"/>
+        android:divider="@color/divider"
+        android:dividerHeight="1dip"/>
 
 
     <android.support.design.widget.FloatingActionButton

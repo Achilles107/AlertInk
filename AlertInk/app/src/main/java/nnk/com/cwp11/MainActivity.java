@@ -53,7 +53,15 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0: {
-                                Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
+                                String phoneNo=rem.getRem_phone();
+                                String name_of_person=rem.getRem_name();
+                                String msg_to_send=rem.getRem_message();
+                                Intent intent=new Intent(MainActivity.this,SendActivity.class);
+                                intent.putExtra("name",name_of_person);
+                                intent.putExtra("phone",phoneNo);
+                                intent.putExtra("message",msg_to_send);
+                                startActivity(intent);
+                                //Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case 1: {

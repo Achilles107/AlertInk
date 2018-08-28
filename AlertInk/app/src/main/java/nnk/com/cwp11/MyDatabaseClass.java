@@ -78,7 +78,7 @@ public class MyDatabaseClass extends SQLiteOpenHelper
                 String rem_message=cursor.getString(3);
                 String rem_birthday=cursor.getString(4);
 
-                Reminder reminder=new Reminder(id,rem_name,rem_number,rem_birthday,rem_message);
+                Reminder reminder=new Reminder(id,rem_name,rem_number,rem_message,rem_birthday);
                 reminderList.add(reminder);
             }while (cursor.moveToNext());
         }

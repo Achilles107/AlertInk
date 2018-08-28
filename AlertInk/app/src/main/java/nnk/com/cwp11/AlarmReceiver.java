@@ -23,7 +23,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        int recId=Integer.parseInt(intent.getStringExtra(ContactActivity.EXTRA_REMINDER_ID));
+        int recId=Integer.parseInt(intent.getStringExtra(SendActivity.EXTRA_REMINDER_ID));
 
         //Get notification title
         MyDatabaseClass myDatabaseClass=new MyDatabaseClass(context);
@@ -31,8 +31,11 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
         String title="Happy Birthday "+reminder.getRem_name();
 
         //Create intent to open on notification click
-        Intent intent1=new Intent(context,ContactActivity.class);
-        intent1.putExtra(ContactActivity.EXTRA_REMINDER_ID,Integer.toString(recId));
+        Intent intent1=new Intent(context,SendActivity.class);
+        intent1.putExtra("name",reminder.getRem_name());
+        intent1.putExtra("phone",reminder.getRem_phone());
+        intent1.putExtra("message",reminder.getRem_message());
+        intent1.putExtra(SendActivity.EXTRA_REMINDER_ID,Integer.toString(recId));
         PendingIntent click=PendingIntent.getActivity(context,recId,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Create notification
@@ -55,7 +58,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 
         //Put id in intent Extra
         Intent intent=new Intent(context,AlarmReceiver.class);
-        intent.putExtra(ContactActivity.EXTRA_REMINDER_ID,Integer.toString(id));
+        intent.putExtra(SendActivity.EXTRA_REMINDER_ID,Integer.toString(id));
         pendingIntent=PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
         //Calculate notification time

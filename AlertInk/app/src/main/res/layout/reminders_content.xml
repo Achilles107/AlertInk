@@ -7,15 +7,20 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:descendantFocusability="afterDescendants">
+        <ImageView
+            android:id="@+id/rempic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/reminderlogo"/>
 
         <TextView
             android:id="@+id/reminder_name"
@@ -23,23 +28,37 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/rempic"
             android:textColor="#000"/>
 
         <TextView
             android:id="@+id/reminder_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/rempic"
+            android:layout_below="@+id/reminder_name"/>
         <TextView
             android:id="@+id/reminder_birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/rempic"
+            android:layout_below="@+id/reminder_number"/>
         <TextView
             android:id="@+id/reminder_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp" />
-    </LinearLayout>
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/rempic"
+            android:layout_below="@+id/reminder_birthday"/>
+    </RelativeLayout>
 
 </FrameLayout>

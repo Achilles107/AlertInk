@@ -6,7 +6,7 @@
     android:padding="10dp">
 
     <TextView
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,10 +21,8 @@
         android:text="Set Date"
         android:textSize="12sp"
         android:onClick="setDate"
-        android:textColor="@color/white"
         android:textStyle="bold"
-        style="?android:attr/borderlessButtonStyle"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/bg_bordered_button"
         android:layout_toRightOf="@+id/date"/>
 
     <EditText
@@ -33,6 +31,7 @@
         android:layout_height="wrap_content"
         android:hint="Type a message"
         android:layout_below="@+id/set_date"
-        android:padding="30dp"/>
+        android:padding="30dp"
+        android:background="@drawable/rounded_edit_text"/>
 
 </RelativeLayout>
